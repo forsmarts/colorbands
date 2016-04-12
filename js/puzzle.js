@@ -34,24 +34,29 @@ cBandsPuzzle.prototype.parseBand = function(band, cells) {
   var firstCell = cells[position.x][position.y];
   var prevCell = undefined;
   var direction = 'R';
+  // Remove to digits, comma and colon.
   band = band.slice(4);
+  // Looping for whole band.
   while (band.length > 0){
-    var color = Number(band.charAt(0));
     var cell = cells[position.x][position.y];
+    // Set color
+    var color = Number(band.charAt(0));
     cell.color = color;
     band = band.slice(1);
+    // Change direction if needed.
     var nextLetter = band.charAt(0);
     if (nextLetter=='R' || nextLetter=='D' || nextLetter=='U' || nextLetter=='L' ){
       direction = nextLetter;
       band = band.slice(1);
     }
+    // Move to the next cell.
     this.shiftTo(position, direction);
-    // remember the direction to draw special edge there
     if (prevCell) {
       cell.prevDirection = prevCell.direction;
       cell.prev = prevCell;
       prevCell.next = cell;
     }
+    // Remember the direction to draw special edge there.
     if (band.length > 0) {
       cell.direction = direction;
     }
