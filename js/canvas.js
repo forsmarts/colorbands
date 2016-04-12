@@ -22,17 +22,44 @@ cBandsCanvas.prototype.render = function(snap){
 }
 
 cBandsCanvas.prototype.drawCell = function(cell){
-  var rect = this.snap.rect(cell.row * 40, cell.column*40, 40, 40);
-  rect.attr({
-    fill: "#fff",
-    stroke: "#000",
-    strokeWidth: 1
-  });
-  var circle = this.snap.circle(cell.row * 40 + 20, cell.column*40 + 20, 16);
+  var lines = []
+  if (cell.direction != 'D' && cell.prevDirection != 'U') {
+    var line = this.snap.line(cell.column*40, cell.row * 40 + 40, cell.column*40 + 40, cell.row * 40 + 40);
+    line.attr({
+      stroke: "#000",
+      strokeWidth: 1
+    });
+    lines.push(line);
+  }
+  if (cell.direction != 'U' && cell.prevDirection != 'D') {
+    var line = this.snap.line(cell.column*40, cell.row * 40, cell.column*40 + 40, cell.row * 40);
+    line.attr({
+      stroke: "#000",
+      strokeWidth: 1
+    });
+    lines.push(line);
+  }
+  if (cell.direction != 'R' && cell.prevDirection != 'L') {
+    var line = this.snap.line(cell.column*40 + 40, cell.row * 40, cell.column*40 + 40, cell.row * 40 + 40);
+    line.attr({
+      stroke: "#000",
+      strokeWidth: 1
+    });
+    lines.push(line);
+  }
+  if (cell.direction != 'L' && cell.prevDirection != 'R') {
+    var line = this.snap.line(cell.column*40, cell.row * 40, cell.column*40, cell.row * 40 + 40);
+    line.attr({
+      stroke: "#000",
+      strokeWidth: 1
+    });
+    lines.push(line);
+  }
+  var circle = this.snap.circle(cell.column*40 + 20, cell.row * 40 + 20, 16);
   circle.attr({
     fill: this.colors[cell.color],
     stroke: "#000",
     strokeWidth: 1
   })
-  cell.element = this.snap.group(rect, circle);
+  cell.element = this.snap.group(circle);
 }

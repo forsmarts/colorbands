@@ -27,57 +27,51 @@ cBandsPuzzle.prototype.parseData = function(data){
 }
 
 cBandsPuzzle.prototype.parseBand = function(band, cells) {
-  var x = Number(band.charAt(0));
-  var y = Number(band.charAt(2));
-  var firstCell = cells[x][y];
+  var position = {
+    x: Number(band.charAt(0)),
+    y: Number(band.charAt(2))
+  }
+  var firstCell = cells[position.x][position.y];
   var prevCell = undefined;
-  var direction = this.decodeDirection('R');
+  var direction = 'R';
   band = band.slice(4);
   while (band.length > 0){
     var color = Number(band.charAt(0));
-    var cell = cells[x][y];
+    var cell = cells[position.x][position.y];
     cell.color = color;
-    if (prevCell) {
-      cell.prev = prevCell;
-      prevCell.next = cell;
-    }
     band = band.slice(1);
     var nextLetter = band.charAt(0);
     if (nextLetter=='R' || nextLetter=='D' || nextLetter=='U' || nextLetter=='L' ){
-      direction = this.decodeDirection(nextLetter);
+      direction = nextLetter;
       band = band.slice(1);
     }
-    x += direction.column;
-    y += direction.row;
+    this.shiftTo(position, direction);
+    // remember the direction to draw special edge there
+    if (prevCell) {
+      cell.prevDirection = prevCell.direction;
+      cell.prev = prevCell;
+      prevCell.next = cell;
+    }
+    if (band.length > 0) {
+      cell.direction = direction;
+    }
     prevCell = cell;
   }
   firstCell.prev = prevCell;
   prevCell.next = firstCell;
 }
 
-cBandsPuzzle.prototype.decodeDirection = function(letter){
-  if (letter=='R'){
-    return {
-      row: 0,
-      column: 1
-    }
+cBandsPuzzle.prototype.shiftTo = function(position, direction){
+  if (direction=='R'){
+    position.x++;
   }
-  if (letter=='D'){
-    return {
-      row: 1,
-      column: 0
-    }
+  if (direction=='D'){
+    position.y++;
   }
-  if (letter=='U'){
-    return {
-      row: -1,
-      column: 0
-    }
+  if (direction=='U'){
+    position.y--;
   }
-  if (letter=='L'){
-    return {
-      row: 0,
-      column: -1
-    }
+  if (direction=='L'){
+    position.x--;
   }
 }
