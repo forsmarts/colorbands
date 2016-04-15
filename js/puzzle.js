@@ -5,6 +5,16 @@ var cBandsPuzzle = function(data){
   this.parseData(data);
 }
 
+function getBandSize(s) {
+	var bandSize = 0;
+	while (s.length > 0){
+		if (s.charAt(0)!="D" && s.charAt(0)!="U" && s.charAt(0)!="R" && s.charAt(0)!="L") {
+			bandSize++;
+		}
+		s = s.slice(1);
+	}
+	return bandSize;
+}
 
 cBandsPuzzle.prototype.parseData = function(data){
   this.gridSize = data.gridSize;
@@ -36,9 +46,11 @@ cBandsPuzzle.prototype.parseBand = function(band, cells) {
   var direction = 'R';
   // Remove to digits, comma and colon.
   band = band.slice(4);
+  var bandSize = getBandSize(band);
   // Looping for whole band.
   while (band.length > 0){
     var cell = cells[position.x][position.y];
+	cell.bandSize = bandSize;
     // Set color
     var color = Number(band.charAt(0));
     cell.color = color;
@@ -57,7 +69,7 @@ cBandsPuzzle.prototype.parseBand = function(band, cells) {
       prevCell.next = cell;
     }
     // Remember the direction to draw special edge there.
-    if (band.length > 0) {
+    if (band.length >= 0) {
       cell.direction = direction;
     }
     prevCell = cell;
