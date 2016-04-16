@@ -61,6 +61,10 @@ var move = function(dx,dy) {
 			old_dx = old_dx - canvas.cellSize;
 		}
 	}
+	if (canvas.puzzle.isSolved()) {
+		canvas.puzzle.element.attr({fill: "#f9f"});
+		document.getElementById("btnNextPuzzle").style.visibility = "visible";
+	}
 }
 
 var start = function(cx,cy) {
@@ -71,7 +75,6 @@ var start = function(cx,cy) {
 	this.data('origTransform', this.transform().local );
 }
 var stop = function() {
-  console.log('finished dragging');
 }
 
 cBandsCanvas = function(puzzle){
@@ -81,6 +84,7 @@ cBandsCanvas = function(puzzle){
     "2": "#5e5",
     "3": "#55e",
     "4": "#c5c",
+    "5": "#f95",
   }
   // Sides and their opposites.
   this.opposite = {
@@ -95,7 +99,7 @@ cBandsCanvas.prototype.render = function(snap){
   this.snap = snap;
   this.cellSize = Math.min(snap.node.clientHeight/this.puzzle.gridSize, snap.node.clientWidth/this.puzzle.gridSize);
   this.ballSize = this.cellSize / 3;
-  this.drawBoard(this.puzzle.gridSize);
+  this.puzzle.element = this.drawBoard(this.puzzle.gridSize);
   for (var i = 0; i < this.puzzle.gridSize; i++) {
 
     for (var j = 0; j < this.puzzle.gridSize; j++) {
@@ -113,6 +117,7 @@ cBandsCanvas.prototype.drawBoard = function(gridSize) {
     strokeWidth: 1
   })
   board.drag(move,start,stop);
+  return board;
 }
 
 cBandsCanvas.prototype.drawCell = function(cell){

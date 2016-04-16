@@ -17,13 +17,25 @@
 
   </head>
   <body>
-    <svg id="mainGrid" width="500" height="500">
-    </svg>
+    <svg id="mainGrid" width="500" height="500" />
+	<div>
+	  <button id="btnNextPuzzle" onClick="fnNextPuzzle()">Go to next puzzle</button>
+	</div>
   </body>
 <script>
-  var puzzle = new cBandsPuzzle(grid0);
-  var canvas = new cBandsCanvas(puzzle);
-  var snap = Snap('#mainGrid');
-  canvas.render(snap);
+	var currentPuzzle = 0;
+	var puzzle;
+	var canvas;
+	var snap;
+	fnNextPuzzle();
+  
+	function fnNextPuzzle() {
+		document.getElementById("btnNextPuzzle").style.visibility = "hidden";
+		puzzle = new cBandsPuzzle(grid[currentPuzzle]);
+		canvas = new cBandsCanvas(puzzle);
+		snap = Snap('#mainGrid');
+		canvas.render(snap);
+		currentPuzzle++;
+	}
 </script>
 </html>

@@ -16,6 +16,17 @@ function getBandSize(s) {
 	return bandSize;
 }
 
+function isAllDifferent (aArray) {
+	for (i=0; i<=aArray.length-2; i++) {
+		for (j=i+1; j<=aArray.length-1; j++) {
+			if (aArray[i]==aArray[j]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 cBandsPuzzle.prototype.parseData = function(data){
   this.gridSize = data.gridSize;
   var cells = [];
@@ -91,4 +102,27 @@ cBandsPuzzle.prototype.shiftTo = function(position, direction){
   if (direction=='L'){
     position.x--;
   }
+}
+
+cBandsPuzzle.prototype.isSolved = function() {
+	var aArray = [];
+	for (x = 0; x <= this.gridSize-1; x++) {
+		aArray = [];
+		for (y = 0; y <= this.gridSize-1; y++) {
+			aArray.push(this.cells[x][y].color);
+		}
+		if (!isAllDifferent(aArray)) {
+			return false;
+		}
+	}
+	for (y = 0; y <= this.gridSize-1; y++) {
+		aArray = [];
+		for (x = 0; x <= this.gridSize-1; x++) {
+			aArray.push(this.cells[x][y].color);
+		}
+		if (!isAllDifferent(aArray)) {
+			return false;
+		}
+	}
+	return true;
 }
