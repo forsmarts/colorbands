@@ -5,28 +5,6 @@ var cBandsPuzzle = function(data){
   this.parseData(data);
 }
 
-function getBandSize(s) {
-	var bandSize = 0;
-	while (s.length > 0){
-		if (s.charAt(0)!="D" && s.charAt(0)!="U" && s.charAt(0)!="R" && s.charAt(0)!="L") {
-			bandSize++;
-		}
-		s = s.slice(1);
-	}
-	return bandSize;
-}
-
-function isAllDifferent (aArray) {
-	for (i=0; i<=aArray.length-2; i++) {
-		for (j=i+1; j<=aArray.length-1; j++) {
-			if (aArray[i]==aArray[j]) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
 cBandsPuzzle.prototype.parseData = function(data){
   this.gridSize = data.gridSize;
   var cells = [];
@@ -48,6 +26,23 @@ cBandsPuzzle.prototype.parseData = function(data){
 }
 
 cBandsPuzzle.prototype.parseBand = function(band, cells) {
+  var  getBandSize = function(bandString) {
+    return bandString.replace(/[DLRU]/g,"").length;
+  }
+  var shiftTo = function(position, direction){
+    if (direction=='R'){
+      position.x++;
+    }
+    if (direction=='D'){
+      position.y++;
+    }
+    if (direction=='U'){
+      position.y--;
+    }
+    if (direction=='L'){
+      position.x--;
+    }
+  }
   var position = {
     x: Number(band.charAt(0)),
     y: Number(band.charAt(2))
@@ -61,7 +56,7 @@ cBandsPuzzle.prototype.parseBand = function(band, cells) {
   // Looping for whole band.
   while (band.length > 0){
     var cell = cells[position.x][position.y];
-	cell.bandSize = bandSize;
+  cell.bandSize = bandSize;
     // Set color
     var color = Number(band.charAt(0));
     cell.color = color;
@@ -89,40 +84,36 @@ cBandsPuzzle.prototype.parseBand = function(band, cells) {
   prevCell.next = firstCell;
 }
 
-cBandsPuzzle.prototype.shiftTo = function(position, direction){
-  if (direction=='R'){
-    position.x++;
-  }
-  if (direction=='D'){
-    position.y++;
-  }
-  if (direction=='U'){
-    position.y--;
-  }
-  if (direction=='L'){
-    position.x--;
-  }
-}
-
 cBandsPuzzle.prototype.isSolved = function() {
-	var aArray = [];
-	for (x = 0; x <= this.gridSize-1; x++) {
-		aArray = [];
-		for (y = 0; y <= this.gridSize-1; y++) {
-			aArray.push(this.cells[x][y].color);
-		}
-		if (!isAllDifferent(aArray)) {
-			return false;
-		}
-	}
-	for (y = 0; y <= this.gridSize-1; y++) {
-		aArray = [];
-		for (x = 0; x <= this.gridSize-1; x++) {
-			aArray.push(this.cells[x][y].color);
-		}
-		if (!isAllDifferent(aArray)) {
-			return false;
-		}
-	}
-	return true;
+  var aArray = [];
+
+  var isAllDifferent = function(aArray) {
+    var counter = {};
+    for (i=0; i<aArray.length; i++) {
+      if(counter[aArray[i]] != undefined) {
+        return false;
+      }
+      counter[aArray[i]] = 1;
+    }
+    return true;
+  }
+  for (x = 0; x <= this.gridSize-1; x++) {
+    aArray = [];
+    for (y = 0; y <= this.gridSize-1; y++) {
+      aArray.push(this.cells[x][y].color);
+    }
+    if (!isAllDifferent(aArray)) {
+      return false;
+    }
+  }
+  for (y = 0; y <= this.gridSize-1; y++) {
+    aArray = [];
+    for (x = 0; x <= this.gridSize-1; x++) {
+      aArray.push(this.cells[x][y].color);
+    }
+    if (!isAllDifferent(aArray)) {
+      return false;
+    }
+  }
+  return true;
 }
