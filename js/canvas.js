@@ -63,7 +63,7 @@ var move = function(dx,dy) {
 	}
 	if (canvas.puzzle.isSolved()) {
 		canvas.puzzle.element.attr({fill: "#f9f"});
-		document.getElementById("btnNextPuzzle").style.visibility = "visible";
+		$("#btnNextPuzzle").show();
 	}
 }
 

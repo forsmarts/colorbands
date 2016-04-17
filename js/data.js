@@ -1,7 +1,5 @@
 // File containing grid data
-var grid = [];
-
-grid[0] = {
+storage.addPuzzle({
   "gridSize": 4,
   "bands": [
     "0,0:2R43",
@@ -11,9 +9,9 @@ grid[0] = {
     "0,2:2D1",
     "1,2:4D1"
   ]
-};
+});
 
-grid[1] = {
+storage.addPuzzle({
   "gridSize": 5,
   "bands": [
     "0,0:3D4512",
@@ -23,4 +21,4 @@ grid[1] = {
     "1,3:2R435D1",
     "1,4:5R41"
   ]
-}
+});

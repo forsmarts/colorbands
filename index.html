@@ -5,6 +5,7 @@
 
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="js/snap.svg-min.js"></script>
+    <script src="js/storage.js"></script>
     <script src="js/data.js"></script>
 
     <script src="js/cell.js"></script>
@@ -21,21 +22,19 @@
 	<div>
 	  <button id="btnNextPuzzle" onClick="fnNextPuzzle()">Go to next puzzle</button>
 	</div>
-  </body>
+</body>
 <script>
-	var currentPuzzle = 0;
-	var puzzle;
-	var canvas;
-	var snap;
-	fnNextPuzzle();
-  
-	function fnNextPuzzle() {
-		document.getElementById("btnNextPuzzle").style.visibility = "hidden";
-		puzzle = new cBandsPuzzle(grid[currentPuzzle]);
-		canvas = new cBandsCanvas(puzzle);
-		snap = Snap('#mainGrid');
-		canvas.render(snap);
-		currentPuzzle++;
-	}
+  //TODO: Remove the variable
+  var canvas;
+  $(document).ready(function(){
+    var fnNextPuzzle = function() {
+      $("#btnNextPuzzle").hide();
+      canvas = new cBandsCanvas(new cBandsPuzzle(storage.getNext()));
+      canvas.render(Snap('#mainGrid'));
+    }
+	  $("#btnNextPuzzle").click(fnNextPuzzle);
+    fnNextPuzzle();
+  });
+
 </script>
 </html>

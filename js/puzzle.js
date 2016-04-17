@@ -68,7 +68,7 @@ cBandsPuzzle.prototype.parseBand = function(band, cells) {
       band = band.slice(1);
     }
     // Move to the next cell.
-    this.shiftTo(position, direction);
+    shiftTo(position, direction);
     if (prevCell) {
       cell.prevDirection = prevCell.direction;
       cell.prev = prevCell;
