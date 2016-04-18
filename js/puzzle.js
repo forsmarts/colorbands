@@ -65,6 +65,7 @@ cBandsPuzzle.prototype.parseBand = function(band, cells) {
     var nextLetter = band.charAt(0);
     if (nextLetter=='R' || nextLetter=='D' || nextLetter=='U' || nextLetter=='L' ){
       direction = nextLetter;
+	  cell.isCorner = true;
       band = band.slice(1);
     }
     // Move to the next cell.

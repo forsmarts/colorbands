@@ -5,8 +5,19 @@ var newCell = new cBandsCell();
 var old_dy = old_dx = 0;
 
 var move = function(dx,dy) {
-	if (thisCell.direction == "D") {
-		if (dy - old_dy > canvas.cellSize / 2) {
+	var dirVer = canvas.direction[thisCell.direction]%2 == 0;
+	var dirHor = canvas.direction[thisCell.direction]%2 == 1;
+	var dirVerCorner = thisCell.isCorner && canvas.direction[thisCell.prevDirection]%2 == 0;
+	var dirHorCorner = thisCell.isCorner && canvas.direction[thisCell.prevDirection]%2 == 1;
+	var coeff;
+	
+	if (dirVer || dirVerCorner) {
+		if (dirVer) {
+			coeff = -(canvas.direction[thisCell.direction]-1);
+		} else {
+			coeff = -(canvas.direction[thisCell.prevDirection]-1);
+		}
+		if (coeff*(dy - old_dy) > canvas.cellSize / 2)  {
 			var aColors = [];
 			for (i=0; i <= thisCell.bandSize-1; i++) {
 				aColors.push(thisCell.prev.color);
@@ -17,9 +28,9 @@ var move = function(dx,dy) {
 				thisCell.element.attr({fill: canvas.colors[aColors[i]]});
 				thisCell = thisCell.prev;				
 			}
-			old_dy = old_dy + canvas.cellSize;
+			old_dy = old_dy + coeff * canvas.cellSize;
 		}
-		if (-(dy - old_dy) > canvas.cellSize / 2) {
+		if (-coeff*(dy - old_dy) > canvas.cellSize / 2)  { 
 			var aColors = [];
 			for (i=0; i <= thisCell.bandSize-1; i++) {
 				aColors.push(thisCell.next.color);
@@ -30,11 +41,16 @@ var move = function(dx,dy) {
 				thisCell.element.attr({fill: canvas.colors[aColors[i]]});
 				thisCell = thisCell.next;				
 			}
-			old_dy = old_dy - canvas.cellSize;
+			old_dy = old_dy - coeff * canvas.cellSize;
 		}
 	}
-	if (thisCell.direction == "R") {
-		if (dx - old_dx > canvas.cellSize / 2) {
+	if (dirHor || dirHorCorner) {
+		if (dirHor) {
+			coeff = -(canvas.direction[thisCell.direction]-2);
+		} else {
+			coeff = -(canvas.direction[thisCell.prevDirection]-2);
+		}
+		if (coeff*(dx - old_dx) > canvas.cellSize / 2)  {
 			var aColors = [];
 			for (i=0; i <= thisCell.bandSize-1; i++) {
 				aColors.push(thisCell.prev.color);
@@ -45,9 +61,9 @@ var move = function(dx,dy) {
 				thisCell.element.attr({fill: canvas.colors[aColors[i]]});
 				thisCell = thisCell.prev;				
 			}
-			old_dx = old_dx + canvas.cellSize;
+			old_dx = old_dx + coeff * canvas.cellSize;
 		}
-		if (-(dx - old_dx) > canvas.cellSize / 2) {
+		if (-coeff*(dx - old_dx) > canvas.cellSize / 2)  {
 			var aColors = [];
 			for (i=0; i <= thisCell.bandSize-1; i++) {
 				aColors.push(thisCell.next.color);
@@ -58,7 +74,7 @@ var move = function(dx,dy) {
 				thisCell.element.attr({fill: canvas.colors[aColors[i]]});
 				thisCell = thisCell.next;				
 			}
-			old_dx = old_dx - canvas.cellSize;
+			old_dx = old_dx - coeff * canvas.cellSize;
 		}
 	}
 	if (canvas.puzzle.isSolved()) {
@@ -92,6 +108,12 @@ cBandsCanvas = function(puzzle){
     "R" : "L",
     "U" : "D",
     "D" : "U"
+  }
+  this.direction = {
+    "D" : 0,
+    "U" : 2,
+    "R" : 1,
+    "L" : 3
   }
 }
 
