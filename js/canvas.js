@@ -83,10 +83,10 @@ var move = function(dx,dy) {
 	}
 }
 
-var start = function(cx,cy) {
+var start = function (cx, cy) {
 	old_dy = old_dx = 0;
-	var x = Math.floor(cx / canvas.cellSize);
-	var y = Math.floor(cy / canvas.cellSize);
+	var x = Math.floor((cx - mainGrid.getBoundingClientRect().left) / canvas.cellSize);
+	var y = Math.floor((cy - mainGrid.getBoundingClientRect().top) / canvas.cellSize);
 	thisCell = canvas.puzzle.cells[x][y];
 	this.data('origTransform', this.transform().local );
 }
