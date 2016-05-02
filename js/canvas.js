@@ -101,6 +101,7 @@ cBandsCanvas = function(puzzle){
     "3": "#55e",
     "4": "#c5c",
     "5": "#f95",
+    "6": "#ff0"
   }
   // Sides and their opposites.
   this.opposite = {
@@ -136,7 +137,7 @@ cBandsCanvas.prototype.drawBoard = function(gridSize) {
   board.attr({
     fill: "#fff",
     stroke: "#000",
-    strokeWidth: 1
+    strokeWidth: 6
   })
   board.drag(move,start,stop);
   return board;
@@ -180,7 +181,7 @@ cBandsCanvas.prototype.drawInnerBorder = function(position, side){
     position.x + end.x * this.cellSize/2, position.y + end.y * this.cellSize/2);
   line.attr({
     stroke: "#000",
-    strokeWidth: 1
+    strokeWidth: 2
   });
 }
 
